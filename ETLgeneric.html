@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Sergey Okunev</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets2/css/main.css" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>	
+	<body class="is-preload">
+		<!-- Nav -->
+			<nav id="nav">
+				<ul class="links">
+					<li><a href="index.html">Обо мне</a></li> 
+					<li><a href="SQLgeneric.html">SQL</a></li>
+					<li><a href="Pythongeneric.html">Python</a></li>
+					<li class="active"><a href="ETLgeneric.html">ETL</a></li>
+					<li><a href="Bashgeneric.html">bash scripts</a></li>
+				</ul>
+				<ul class="icons">
+					<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+					<li><a href="#" class="icon brands fa-telegram"><span class="label">Telegram</span></a></li>
+				</ul>
+			</nav>
+		<!-- Posts -->
+		<article id="work" class="wrapper style1">
+			<div id="wrapper">
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date">April 25, 2017</span>
+									<h3>Загрузка данных <br/>Excel-файла в БД Oracle</h3>
+								</header>								
+								<p>Необходимо загрузить данные из Excel-файла в таблицу БД Oracle.<br/>
+								Для предложенного решения нет необходимости устанавливать Oracle Client на машину, исполняющую код.
+								Для подключения к БД Oracle используется библиотека oracledb. Её необходимо предварительно установить. Для чтения файла Excel используется библиотека pandas.<br/>
+							    По завершению загрузки данных в БД, выводится время, потраченное на загрузку, для этого используется пакет time.<br/>
+							    Excel-файл содержит вначале описание отчёта и шапку с заголовками. Всё это отбрасывается при загрузке, используя конструкцию <code>df.iloc[3:,0:11]</code> - самая первая пустая строка не индексируется, 
+								затем, последующие 3 строки пропускаем и загрузку начинаем с 4-й строки, у которой индекс равен 3. Колонки загружаем с 1 по 10. В одной из ячеек в Excel-файле не указано значение. 
+								Это значение не возможно вставить в колонку таблицы Oracle - выходит сообщение об ошибке "oracledb.exceptions.NotSupportedError: DPY-3013: unsupported Python type float for database type DB_TYPE_VARCHAR". 
+								Для устранения этой ошибки, используется функция <code>.fillna('')</code></p>
+
+								<pre><code># pip install oracledb 
+# pip install pandas
+import getpass
+import oracledb
+import pandas as pd
+import time
+
+pw = getpass.getpass("Enter password: ")
+connection = oracledb.connect(
+	user = "iger",
+	password = pw,
+	dsn = '192.168.1.84:1521/orclpdb')
+
+cursor = connection.cursor()
+
+start_time = time.perf_counter()
+# read datas from excel
+df = pd.read_excel('list_brokers.xlsx')
+
+dts = df.iloc[3:,0:11].fillna('').values.tolist() 
+
+tdts = list(tuple(x) for x in dts)
+
+# insert data into Oracle table in batch mode
+cursor.executemany('insert into brokers (num,brokername,inn, ogrn,address,phone,license,datefrom,period,status) values(:1,:2,:3,:4,:5,:6,:7,:8,:9,:10)',tdts)
+
+connection.commit()
+
+print(f'Время выполнения:  {time.perf_counter() - start_time}')
+print(cursor.rowcount, "Rows Inserted")
+cursor.close()
+connection.close()
+								</code></pre>
+								<p></p>
+								<p>Таблица в БД Oracle имеет следующее описание:</p>
+								<pre><code>drop table brokers purge;
+create table brokers (
+	num number,
+	brokername varchar2(200 char),
+	inn number,
+	ogrn number,
+	address varchar2(500 char),
+	phone varchar2(500 char),
+	license varchar2(150 char),
+	datefrom varchar2(150 char),
+	period varchar2(150 char),
+	status varchar2(150 char)) pctfree 0 nologging nocompress;
+								</code></pre>	
+							</section>
+						<!-- 
+						<section class="post">
+							<header class="major">
+								<span class="date">April 25, 2017</span>
+								<h3>Next post</h3>
+								<p>Aenean ornare velit lacus varius enim ullamcorper proin aliquam<br />
+								facilisis ante sed etiam magna interdum congue. Lorem ipsum dolor<br />
+								amet nullam sed etiam veroeros.</p>
+							</header>							
+							<p>.</p>
+							<p>.</p>
+						</section>-->
+					</div>
+
+									<!-- Copyright -->
+									<div id="copyright">
+										<ul><li><a href="https://t.me/SergeyOkunevBI"><span class="label">@SergeyOkunevBI</span></a></li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+									</div>
+
+			</div>
+			</div>
+		</article>
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Sergey Okunev</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets2/css/main.css" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>	
+	<body class="is-preload">
+		<!-- Nav -->
+			<nav id="nav">
+				<ul class="links">
+					<li><a href="index.html">Обо мне</a></li> 
+					<li><a href="SQLgeneric.html">SQL</a></li>
+					<li><a href="Pythongeneric.html">Python</a></li>
+					<li><a href="ETLgeneric.html">ETL</a></li>
+					<li class="active"><a href="Bashgeneric.html">bash scripts</a></li>
+				</ul>
+				<ul class="icons">
+					<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+					<li><a href="#" class="icon brands fa-telegram"><span class="label">Telegram</span></a></li>
+				</ul>
+			</nav>
+		<!-- Posts -->
+		<article id="work" class="wrapper style1">
+			<div id="wrapper">
+					<div id="main">
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date">Апрель 02, 2017</span>
+									<h3>Чтение из файла последней строки</h3>
+								</header>
+								<!--<div class="image main"><img src="images/pic01.jpg" alt="" /></div>-->
+								<p>В файле с логом есть среди прочего текста имена файлов в формате <цифровой код>BigDatа<дата в формате YYYYMMDD>.csv, например 0030221799bigData20230011.csv
+									Необходим скрипт, чтобы находить в логе название вчерашнего файла, пришедшего последним, т.е. после него уже не встречаются файлы со вчерашней датой в названии.</p>
+								<p>Сначала создадим текстовый файл и запишем в него строки. Откроем терминал и воспользуемся командой <code>cat > filelog.log</code>
+								Введём в терминале следующие строки:</p>
+								<pre><code>67889556BidData20230402.csv
+36784934BigData20230402.csv
+38490345BigData20230402.csv text for reading
+38047552BigData20230401.csv nothing happend</code></pre>
+<p>После последней строки нажмём на клавишу Enter, затем нажмём на клавиши Ctrl+C. Готово, файл заполнен.</p>
+								<p>Решение: <pre><code>grep "^[0-9]*BigData$(date -d"yesterday" +'%Y%m%d')\.csv" logfile.log | tail -1</code></pre></p>	
+							</section>
+						<!-- Post -->
+						<section class="post">
+							<header class="major">
+								<span class="date">Апрель 03, 2017</span>
+								<h3>Загрузка данных из файла в БД Oracle</h3>
+							</header>							
+							<p>Алгоритм: переходим в рабочий каталог (...exp_pasports), удаляем заархивированный файл, скачиваем заарихивированный файл с сайта, 
+								восстанавливаем файл из архива и перенаправляем поток в sqlldr, а он загружает данные в таблицу Oracle, 
+								запускаем хранимую процедуру в БД, используя sqlplus.
+							</p>
+							<pre><code>#!/bin/bash
+export http_proxy=http://...
+export PATH=$PATH:/opt/oracle/product/12/bin
+export ORACLE_HOME=/opt/oracle/product/12
+export NLS_LANG=AMERICAN_CIS.CL8MSWIN1252
+export NLS_DATE_FORMAT=YYYY.MM.DD
+export NLS_NUMERIC_CHARACTERS=.,
+export TNS_ADMIN=/.../.../network
+
+cd /sprg/forbis/exp_pasports
+rm list_of_expired_passports.csv.bz2
+curl -fsS http://www.fms.gov.ru/upload/expired-passports/list_of_expired_passports.csv.bz2 -o list_of_expired_passports.csv.bz2
+bzcat list_of_expired_passports.csv.bz2 | sqlldr /@FORP_IB_JOBS_1 control=exp_passports.ctl
+sqlplus /@FORP_IB_JOBS_1 @after_upload.sql</code></pre>
+						</section>
+						<!-- Post -->
+						<!--<section class="post">
+							<header class="major">
+								<span class="date">Апрель 04, 2017</span>
+								<h3>next ...</h3>
+							</header>
+							<!--<div class="image main"><img src="images/pic01.jpg" alt="" /></div>-->
+							<!--<p></p>
+							<p></p>
+						</section>	-->					
+					</div>
+
+				<!-- Copyright -->
+				<div id="copyright">
+					<ul><li><a href="https://t.me/SergeyOkunevBI"><span class="label">@SergeyOkunevBI</span></a></li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+				</div>
+
+			</div>
+			</div>
+		</article>
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

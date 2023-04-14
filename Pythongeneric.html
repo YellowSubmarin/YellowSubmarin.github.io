@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Sergey Okunev</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets2/css/main.css" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>	
+	<body class="is-preload">
+		<!-- Nav -->
+			<nav id="nav">
+				<ul class="links">
+					<li><a href="index.html">Обо мне</a></li> 
+					<li><a href="SQLgeneric.html">SQL</a></li>
+					<li class="active"><a href="Pythongeneric.html">Python</a></li>
+					<li><a href="ETLgeneric.html">ETL</a></li>
+					<li><a href="Bashgeneric.html">bash scripts</a></li>
+				</ul>
+				<ul class="icons">
+					<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+					<li><a href="#" class="icon brands fa-telegram"><span class="label">Telegram</span></a></li>
+				</ul>
+			</nav>
+		<!-- Posts -->
+		<article id="work" class="wrapper style1">
+			<div id="wrapper">
+					<div id="main">
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date">April 25, 2017</span>
+									<h3>Полезные однострочные программы</h3>
+									<p>https://medium.com/@chenyumei8866/20-extremely-useful-single-line-python-codes-bc553ea4832a</p>
+								</header>
+								<!--<div class="image main"><img src="images/pic01.jpg" alt="" /></div>-->
+								<h5>Цикл for</h5>
+								<p></p>
+								<pre><code>#For loop in one line
+mylist = [200, 300, 400, 500]
+#Single line For loop
+result = [] 
+for x in mylist: 
+    if x > 250: 
+        result.append(x) 
+print(result) # [300, 400, 500]
+#One-line code way
+result = [x for x in mylist if x > 250] 
+print(result) # [300, 400, 500]</code></pre>
+								<h5>Цикл while</h5>
+								<p></p>
+								<pre><code>#Method 1 Single Statement   
+while True: print(1) #infinite 1  
+#Method 2 Multiple Statements  
+x = 0   
+while x < 5: print(x); x= x + 1 # 0 1 2 3 4 5</code></pre>
+								<h5>if else в одну строку</h5>
+								<p></p>
+								<pre><code>#if Else In a single line.  
+#Example 1 if else  
+print("Yes") if 8 > 9 else print("No") # No  
+#Example 2 if elif else   
+E = 2   
+print("High") if E == 5 else print("数据STUDIO") if E == 2 else   
+print("Low") # Data STUDIO   
+   
+#Example 3 only if  
+if 3 > 2: print("Exactly") # Exactly</code></pre>
+								<h5>Слияние словарей</h5>
+								<p></p>
+								<pre><code># Merging dictionaries in one line  
+d1 = { 'A': 1, 'B': 2 }   
+d2 = { 'C': 3, 'D': 4 }  
+#Method1   
+d1.update(d2)   
+print(d1) # {'A': 1, 'B': 2, 'C': 3, 'D': 4}  
+#Method2   
+d3 = {**d1, **d2}   
+print(d3) # {'A': 1, 'B': 2, 'C': 3, 'D': 4}</code></pre>
+								<h5>Функция в одну строку</h5>
+								<p></p>
+								<pre><code>#Function in one line  
+#Method1
+def fun(x): return True if x % 2 == 0 else False   
+print(fun(2)) # False  
+#Method2
+fun = lambda x : x % 2 == 0   
+print(fun(2)) # True   
+print(fun(3)) # False</code></pre>
+								<h5>Рекурсия в одну строку</h5>
+								<pre><code># Single-line recursion 
+#Fibonaci Single-line recursion example  
+def Fib(x): return 1 if x in {0, 1} else Fib(x-1) + Fib(x-2)  
+print(Fib(5)) # 8  
+print(Fib(15)) # 987</code></pre>
+								<h5>Фильтрация массива</h5>
+								<p></p>
+								<pre><code># Filtering arrays in a single line  
+mylist = [2, 3, 5, 8, 9, 12, 13, 15]  
+#Normal way  
+result = []   
+for x in mylist:   
+    if x % 2 == 0:   
+        result.append(x)  
+print(result) # [2, 8, 12]  
+# One-line method  
+result = [x for x in mylist if x % 2 == 0]   
+print(result) # [2, 8, 12]</code></pre>
+								<h5>Обработка исключений</h5>
+								<p></p>
+								<pre><code># Exception handling in one line  
+#Original method  
+try:  
+    print(x)  
+except:  
+    print("Error")  
+#Single line way  
+exec('try:print(x) \nexcept:print("Error")') # Error</code></pre>
+								<h5>Конвертация списка в словарь</h5>
+								<p></p>
+								<pre><code># Dictionary in one line  
+mydict = ["John", "Peter", "Mathew", "Tom"]  
+mydict = dict(enumerate(mydict))  
+print(mydict) # {0: 'John', 1: 'Peter', 2: 'Mathew', 3: 'Tom'}</code></pre>
+								<h5>Объявление переменных</h5>
+								<p></p>
+								<pre><code>#Multiple variable assignments in one line.  
+#Single-line method  
+x = 5   
+y = 7   
+z = 10   
+print(x , y, z) # 5 7 10  
+#Single line way  
+a, b, c = 5, 7, 10   
+print(a, b, c) # 5 7 10</code></pre>
+								<h5>Обмен значениями переменных</h5>
+								<p></p>
+								<pre><code>#Swap values in one line  
+#Single-line method 
+v1 = 100  
+v2 = 200  
+temp = v1  
+v1 = v2   
+v2 = temp  
+print(v1, v2) # 200 100  
+# One-line value swapping 
+v1, v2 = v2, v1   
+print(v1, v2) # 200 100</code></pre>
+								<h5>Сортировка списка</h5>
+								<p></p>
+								<pre><code># Sort in one line  
+mylist = [32, 22, 11, 4, 6, 8, 12]   
+# Method1
+mylist.sort()   
+print(mylist) # # [4, 6, 8, 11, 12, 22, 32]  
+print(sorted(mylist)) # [4, 6, 8, 11, 12, 22, 32]</code></pre>
+								<h5>Чтение файла</h5>
+								<p></p>
+								<pre><code>#Reading a file in one line  
+#Single-line method 
+with open("data.txt", "r") as file:   
+    data = file.readline()   
+    print(data) # Hello world  
+#Single line way  
+data = [line.strip() for line in open("data.txt","r")]   
+print(data) # ['hello world', 'Hello Python']</code></pre>
+								<h5>Объявление класса</h5>
+								<p></p>
+								<pre><code># One-line class  
+#Regular way  
+class Emp:   
+    def __init__(self, name, age):   
+        self.name = name   
+        self.age = age  
+        emp1 = Emp("a44", 22)   
+print(emp1.name, emp1.age) # 
+#Single line way  
+#Method 1 Lambda with Dynamic Attributes 
+  
+Emp = lambda:None; Emp.name = "a44"; Emp.age = 22  
+print(Emp.name, Emp.age) # 
+  
+#Method 2 
+from collections import namedtuple  
+Emp = namedtuple('Emp', ["name", "age"]) ("a44", 22)   
+print(Emp.name, Emp.age)</code></pre>
+								<h5>Разделитель точка с запятой</h5>
+								<p></p>
+								<pre><code># One-line semicolon 
+# exsample 1   
+a = "Python"; b = "Programming"; c = "languages"; print(a, b, c)  
+# print
+# Python Programming languages</code></pre>
+								<h5>Вывод значений в консоль</h5>
+								<p></p>
+								<pre><code># One line print
+#Single-line method
+for x in range(1, 5):  
+    print(x) # 1 2 3 4  
+#Single line way  
+print(*range(1, 5)) # 1 2 3 4  
+print(*range(1, 6)) # 1 2 3 4 5</code></pre>
+								<h5>Функция map</h5>
+								<p></p>
+								<pre><code>#One line map function 
+print(list(map(lambda a: a + 2, [5, 6, 7, 8, 9, 10])))  
+# print
+# [7, 8, 9, 10, 11, 12]</code></pre>
+								<h5>Множественное удаление элементов в списке</h5>
+								<p></p>
+								<pre><code># Deleting the Mul elements from the first row of the list
+mylist = [100, 200, 300, 400, 500]  
+del mylist[1::2]  
+print(mylist) # [100, 300, 500]</code></pre>
+								<h5>Паттерны print</h5>
+								<p></p>
+								<pre><code># One line print pattern#   
+# Single-line method  
+for x in range(3):  
+    print('😀')  
+# print
+# 😀 😀 😀  
+#Single line way  
+print('😀' * 3) # 😀 😀 😀   
+print('😀' * 2) # 😀 😀   
+print('😀' * 1) # 😀</code></pre>
+								<h5>Поиск простых чисел</h5>
+								<p></p>
+								<pre><code># Find primes in a range in a single line of code
+print(list(filter(lambda a: all(a % b != 0 for b in range(2, a)),  
+                  range(2,20))))  
+# print
+# [2, 3, 5, 7, 11, 13, 17, 19]</code></pre>
+							</section>
+						<!-- Post -->
+						<section class="post">
+							<header class="major">
+								<span class="date">April 25, 2017</span>
+								<h3>Основные вопросы по Python на собеседовании</h3>
+								<p>Aenean ornare velit lacus varius enim ullamcorper proin aliquam<br />
+								facilisis ante sed etiam magna interdum congue. Lorem ipsum dolor<br />
+								amet nullam sed etiam veroeros.</p>
+							</header>							
+							<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur sapien risus, commodo eget turpis at, elementum convallis enim turpis, lorem ipsum dolor sit amet nullam.</p>
+						</section>
+						<!-- 
+						<section class="post">
+							<header class="major">
+								<span class="date">April 25, 2017</span>
+								<h3>Telegram-бот на Python</h3>
+								<p>https://medium.com/@chenyumei8866/20-extremely-useful-single-line-python-codes-bc553ea4832a</p>
+							</header>
+							<!--<div class="image main"><img src="images/pic01.jpg" alt="" /></div>-->
+							<p></p>
+							<p></p>
+						</section>		 -->				
+					</div>
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li><a href="https://t.me/SergeyOkunevBI"><span class="label">@SergeyOkunevBI</span></a></li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+			</div>
+		</article>
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
