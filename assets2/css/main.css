@@ -3631,15 +3631,15 @@ input2, select2, textarea2 {
 					}
 
 				#nav2 ul2.links li2.active {
-					background-color: #ffffff;
+					background-color: white;
 				}
 
 					#nav2 ul2.links li2.active a2 {
-						color: #1e252d;
+						color: yellow
 					}
 
 						#nav2 ul2.links li2.active a2:hover {
-							color: #18bfef !important;
+							color: yellow !important;
 						}
 
 		#nav2 ul2.icons {

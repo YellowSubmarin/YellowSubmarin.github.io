@@ -2182,25 +2182,29 @@ input, select, textarea {
 			transition: background-color .2s ease-in-out;
 			position: relative;
 			display: block;
-			color: #fff;
 			text-decoration: none;
 			outline: 0;
 			font-weight: 600;
 			border-radius: 8px;
-			color: #fff;
+			color: white;
 			height: 2.5em;
 			line-height: 2.5em;
 			padding: 0 1.25em;
 		}
 
 			#nav a:hover {
-				color: #fff !important;
+				color: #fff; !important;
 				background: #383838;
 			}
 
-			#nav a.active {
-				background: #484848;
+			#nav ul.links  li.active {
+				background: #383838;
+				color: yellow;
 			}
+			
+			#nav ul.links  li.active a {
+				color: yellow;
+			}			
 
 				#nav a.active:before {
 					content: '';
@@ -2212,6 +2216,7 @@ input, select, textarea {
 					border-left: solid 0.75em transparent;
 					border-right: solid 0.75em transparent;
 					border-top: solid 0.6em #282828;
+					color: yellow;
 				}
 
 /* Articles */
