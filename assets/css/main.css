@@ -204,7 +204,8 @@ input, select, textarea {
 	}
 
 	p, ul, dl, table {
-		margin-bottom: 2em;
+		margin-top: 0.75em;
+		margin-bottom: 0.75em;
 		color: black;
 	}
 
@@ -226,7 +227,7 @@ input, select, textarea {
 
 		header > h1 + p {
 			font-size: 1.1rem;
-			margin-top: -0.5rem;
+			margin-top: 0.5rem;
 			line-height: 2;
 		}
 
@@ -2108,7 +2109,7 @@ input, select, textarea {
 					margin: 0 0 0 0;					
 					display: block;
 					line-height: 1.75;
-					padding: 1rem 1.5rem;
+					padding: 0.5rem 0.5rem;
 					overflow-x: auto;
 					text-align: left;
 				}
