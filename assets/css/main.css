@@ -227,7 +227,7 @@ input, select, textarea {
 
 		header > h1 + p {
 			font-size: 1.1rem;
-			margin-top: 0.5rem;
+			margin-top: -0.5rem;
 			line-height: 2;
 		}
 
@@ -2109,7 +2109,7 @@ input, select, textarea {
 					margin: 0 0 0 0;					
 					display: block;
 					line-height: 1.75;
-					padding: 0.5rem 0.5rem;
+					padding: 1rem 1.5rem;
 					overflow-x: auto;
 					text-align: left;
 				}
@@ -2162,7 +2162,7 @@ input, select, textarea {
 		z-index: 10000;
 		cursor: default;
 		height: 3.5em;
-		line-height: 3.5em;
+		line-height: 0.5em;
 	}
 
 		#nav ul {
@@ -2190,7 +2190,7 @@ input, select, textarea {
 			color: white;
 			height: 2.5em;
 			line-height: 2.5em;
-			padding: 0 1.25em;
+			padding: 0 1.5em;
 		}
 
 			#nav a:hover {
