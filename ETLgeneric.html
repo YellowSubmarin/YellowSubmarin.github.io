@@ -31,6 +31,99 @@
 		<article id="work" class="wrapper style1">
 			<div id="wrapper">
 					<div id="main">
+
+						<!-- Post -->
+						<section class="post">
+							<header class="major">
+								<span class="date">Май 04, 2023</span>
+								<h3>Загрузка большого объёма данных из одной таблицы БД Oracle в другую таблицу</h3>
+							</header>
+							<!--<div class="image main"><img src="images/pic01.jpg" alt="" /></div>-->
+							<p>Таблица в базе данных, содержащая исходные данные имеет следующее описание:</p>
+							<pre><code>create table LoadData(
+        id    number, 
+        color varchar2(10 char), 
+        ldate date, 
+        sport varchar2(15 char)) pctfree 0 nocompress nologging;</code></pre>
+							<p></p>	
+							<p>Таблица, в которую данные будут записываться имеет следующее описание:</p>
+							<pre><code>create table TargetData(
+        id    number, 
+        color varchar2(10 char), 
+        ldate date, 
+        sport varchar2(15 char),
+        comm  varchar2(50 char)) pctfree 0 nocompress nologging;</code></pre>
+							<p>Чтобы продемонстировать подход Extract Transform Load определим три соответствующие процедуры, которые будут вызываться друг за другом. 
+								Объём данных из источника возможно будет слишком большим и поэтому, чтобы сократить потребление оперативной памяти определим эти процедуры как генераторы 
+								и передавать данные будем порциями, размер которых определён переменной batch_size.
+							</p>
+							<pre><code>from collections.abc import Generator
+from typing import Tuple, Dict, Any
+import oracledb
+import time
+from datetime import datetime
+
+def coroutine(func):
+    #@wraps(func)
+    def inner(*args, **kwargs) -> Generator:
+        fn: Generator = func(*args,**kwargs)
+        next(fn)
+        return fn
+    
+    return inner
+
+# Step 1
+def extractData(batch: Generator) -> None:
+    cursor = connection.cursor()
+    batch_size = 500000
+    data = []
+
+    # read datas from Source DB
+    for line in cursor.execute('select id,color,ldate,sport from LoadData'): 
+        data.append((line[0],line[1],line[2],line[3]))
+        if len(data) % batch_size == 0:
+            batch.send(data)
+            data = []
+    if data:
+        batch.send(data)
+
+    cursor.close()
+
+# Step 2
+@coroutine
+def transformData(batch: Generator) -> Generator[None, Dict, None]:
+    while rec := (yield):
+        record = []
+        for line in rec:
+            record.append((line[0],line[1],line[2],line[3],f'{line[1]} team in {line[3]}'))
+        batch.send(record)
+
+# Step 3
+@coroutine
+def loadData() -> Generator[None, Tuple, None]:
+    cursor = connection.cursor()
+    while subject := (yield):
+        sql = 'insert into TargetData (id,color,ldate,sport,comm) values (:1,:2,:3,:4,:5)'
+        cursor.executemany(sql, subject)
+        connection.commit()
+    cursor.close()
+
+connection = oracledb.connect(
+    user = "iger",
+    password = "iger",
+    dsn = '192.168.1.84:1521/orclpdb')
+
+start_time = time.perf_counter()    
+
+unloads = loadData()
+enrichment = transformData(unloads)
+extractData(enrichment)
+
+print(f'Время выполнения:  {time.perf_counter() - start_time}')
+
+connection.close()</code></pre>
+						</section>		
+
 						<!-- Post -->
 							<section class="post">
 								<header class="major">
@@ -93,8 +186,9 @@ print(row_count, "Rows Inserted")
 cursor.close()
 connection.close() </code></pre>
 
-							</section>					
+							</section>		
 
+						<!-- Post -->
 							<section class="post">
 								<header class="major">
 									<span class="date">Апрель 10, 2023</span>
