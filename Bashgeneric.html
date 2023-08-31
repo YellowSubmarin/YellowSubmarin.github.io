@@ -32,9 +32,107 @@
 			<div id="wrapper">
 					<div id="main">
 						<!-- Post -->
+						<!--<section class="post">
+							<header class="major">
+								<span class="date">Август 15, 2023</span>
+								<h3>next ...</h3>
+							</header>
+							<div class="image main"><img src="images/pic01.jpg" alt="" /></div>
+							<p></p>
+							<pre><code></code></pre>
+						</section>	-->	
+						<!-- Post -->
+						<section class="post">
+							<header class="major">
+								<span class="date">Август 29, 2023</span>
+								<h3>Архитектура ETL-процессов на bash</h3>
+							</header>
+							<p>Первоначальный файл, файл скрипта bash, который запускается планировщиком для запуска всего ETL-процесса, назовоём его run.sh
+							   Предназначение скрипта run.sh для всех ETL-процессов одинаковое - определение основных переменных, создание стандартных каталогов, 
+							   переназначкение вывода последующих скриптов в определённых лог-файл, последовательный запуск других файлов скриптов bash 
+							   и определение общего результата выполнения скриптов.
+							   Если предполагается, что ETL-процесс будет сохранять данные в БД, то в подкаталоге CFG необходимо создать файл конфигурации ETL-процесса.
+							   В этом файле первым вызовом станет файл /home/user/.bash_profile.  В этом файле определяются три основные переменные: ORACLE_HOME, TNS_ADMIN, ORACLE_SID. 
+							   Также определяются другие важные параметры. 
+							
+							</p>
+							<pre><code></code></pre>
+						</section>						
+						<section class="post">
+							<header class="major">
+								<span class="date">Август 22, 2023</span>
+								<h3>Количество искомых предложений в файле</h3>
+							</header>
+							<p>Как узнать, сколько нужных предложений в файле msg.out ?</p>
+							<pre><code>CNT=`cat msg.out | grep "messages sended: 1" | wc -l`
+echo "Count equals ${CNT}"
+							</code></pre>
+						</section>							
+						<!-- Post -->
+						<section class="post">
+							<header class="major">
+								<span class="date">Август 18, 2023</span>
+								<h3>Формирование файла сообщения на основе шаблона</h3>
+							</header>
+							<p>В каталоге есть файл с шаблоном сообщения - application.templ 
+И необходимо заменить в нём маску на дату, которая находится в файле file_with_values.txt Затем, сформированное сообщение сохранить в файле application.yml</p>
+							<pre><code>HOME_DIR=$(dirname $(realpath $0))
+read dat < file_with_values.txt
+sed 's/DD.MM.YYYY/'${dat:0:10}'/g' ${HOME_DIR}/CFG/application.templ > application.yml
+</code></pre>
+						</section>
+						<!-- Post -->
+						<section class="post">
+							<header class="major">
+								<span class="date">Август 15, 2023</span>
+								<h3>bash + Python парсинг JSON для получения 1-го значения</h3>
+							</header>
+							<!--<div class="image main"><img src="images/pic01.jpg" alt="" /></div>-->
+							<p>К примеру, с сервера https://commsite.ru можно загрузить данные в формате JSON и в одном из ключей указан URL на другой сервер. 
+								Используя bash & Python можно легко и просто получить значение этого ключа:  </p>
+							<pre><code>URL=`curl -s https://commsite.ru -x http://proxy.server | python -c "import sys, json; print(json.load(sys.stdin)['KEY_NAME'])"`
+echo $URL	
+</code></pre>
+						</section>						
+						<!-- Post -->
+						<section class="post">
+							<header class="major">
+								<span class="date">Июнь 19, 2023</span>
+								<h3>Часто используемые команды в Linux</h3>
+							</header>
+							<!--<div class="image main"><img src="images/pic01.jpg" alt="" /></div>-->
+							<p>В том случае, когда с локального компьютера нет доступа к целевому компьютеру на linux, используя Pytty, например, сначала заходим на 
+								тот компьютер, на который есть доступ, а затем с этого компьютреа заходим на целевой комьютер, используя команду ssh.</p> 
+								<pre><code>ssh username@remote_host</code></pre>
+							<p>Если на компьютере много проектов с отдельными каталогами, то найти нужный файл проекта поможет эта команда.</p>
+							<pre><code>find . -name FILE_NAME.*</code></pre>							
+							<p>Команда find -delete в указанной конфигурации находит файлы *.log и удаляет их. Это полезно, например, в том случае, когда необходимо заархивировать все скрипты, но предварительно удалить все ненужные файлы.</p>
+							<pre><code>find ./ -type f -name "*.log" -delete</code></pre>							
+							<p>Найти файл скриптов, который содержит в себе уже известный текст поможет эта команда.</p>
+							<pre><code>grep -inr --include=\*.sh "some text from file"</code></pre>							
+							<p>Команда dig вернёт только IP адрес указанного сервера.</p>
+							<pre><code>ip=`dig +short linux.org`
+echo ${ip}</code></pre>							
+							<p>Команда date вернёт текущую дату в указанном формате.</p>	
+							<pre><code>realdate=`date +%Y-%m-%d`
+echo ${realdate}</code></pre>							
+							<p>Команда netstat вернёт процесс, который слушает порт 8088 (например).</p>
+							<pre><code>netstat -tulpn | grep 8088</code></pre>	
+							<p>Удалить разделяющие точки из даты.</p>
+							<pre><code>DD=24.08.2023
+echo ${DD//./}</code></pre>		
+<p>Узнать наименование текущего каталога.</p>
+<pre><code>DIR=${PWD##*/}
+echo ${DIR}</code></pre>											
+<p>Архивируем файл.</p>
+<pre><code>tar -czf /path/cfg.tgz /path/cfg.txt &>> ${LOG_FILE} </code></pre>	
+<p>Разархивируем файл.</p>
+<pre><code>tar -xvf /path/cfg.tgz</code></pre>		
+						</section>							
+						<!-- Post -->
 							<section class="post">
 								<header class="major">
-									<span class="date">Апрель 02, 2017</span>
+									<span class="date">Июнь 01, 2023</span>
 									<h3>Чтение из файла последней строки</h3>
 								</header>
 								<!--<div class="image main"><img src="images/pic01.jpg" alt="" /></div>-->
@@ -52,7 +150,7 @@
 						<!-- Post -->
 						<section class="post">
 							<header class="major">
-								<span class="date">Апрель 03, 2017</span>
+								<span class="date">Июнь 02, 2023</span>
 								<h3>Загрузка данных из файла в БД Oracle</h3>
 							</header>							
 							<p>Алгоритм: переходим в рабочий каталог (...exp_pasports), удаляем заархивированный файл, скачиваем заарихивированный файл с сайта, 
@@ -73,17 +171,7 @@ rm list_of_expired_passports.csv.bz2
 curl -fsS http://www.fms.gov.ru/upload/expired-passports/list_of_expired_passports.csv.bz2 -o list_of_expired_passports.csv.bz2
 bzcat list_of_expired_passports.csv.bz2 | sqlldr /@FORP_IB_JOBS_1 control=exp_passports.ctl
 sqlplus /@FORP_IB_JOBS_1 @after_upload.sql</code></pre>
-						</section>
-						<!-- Post -->
-						<!--<section class="post">
-							<header class="major">
-								<span class="date">Апрель 04, 2017</span>
-								<h3>next ...</h3>
-							</header>
-							<!--<div class="image main"><img src="images/pic01.jpg" alt="" /></div>-->
-							<!--<p></p>
-							<p></p>
-						</section>	-->					
+						</section>										
 					</div>
 
 				<!-- Copyright -->
