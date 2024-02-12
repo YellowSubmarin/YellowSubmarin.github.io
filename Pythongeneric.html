@@ -32,9 +32,27 @@
 		<article id="work" class="wrapper style1">
 			<div id="wrapper">
 					<div id="main">
+						<!-- Post -->
+						<section class="post">
+							<header class="major">
+								<span class="date">Февраль 07, 2024</span>
+								<h3>Создание каталога и символического линка на него в linux</h3>
+								<p>Автоматизация при доставке кода на пром сервер.<br /></p>
+							</header>							
+							<p>Если код на пром сервер доставляется с помощью Jenkins, то можно использовать yml-файл для создания всех необходимых каталогов на сервере - для логирования, для хранения файлов и т.д.
+Но в том случае, когда необходимо ввести в работу новый или очередной сервер (при ротации), Jenkins не используется. И тогда на помощь приходят скрипты, а точнее предусмотрительность программиста.
+							</p>
+							<pre><code>import os
+LOG_DIR = '/ora_data4/Export/IMARKETPLACE/LOG'
+HOME_DIR_LOG = '/ora_data1/Scripts/IMARKETPLACE/LOG'
+if not os.path.exists(LOG_DIR):
+    os.mkdir(LOG_DIR)
+if not os.path.islink(HOME_DIR_LOG) and not os.path.exists(HOME_DIR_LOG):
+    os.symlink(LOG_DIR, HOME_DIR_LOG)</code></pre> 
+						</section>
 						<section class="post">
 								<header class="major">
-									<span class="date">April 25, 2017</span>
+									<span class="date">Ноябрь 21, 2023</span>
 									<h3>Полезные однострочные программы</h3>
 								</header>
 								<!--<div class="image main"><img src="images/pic01.jpg" alt="" /></div>-->
