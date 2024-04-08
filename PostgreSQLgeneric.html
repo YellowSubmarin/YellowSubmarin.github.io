@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Sergey Okunev</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets2/css/main.css" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>	
+	<body class="is-preload"> 
+		<!-- Nav -->
+			<nav id="nav">
+				<ul class="links">
+					<li><a href="index.html">Обо мне</a></li> 
+					<li><a href="SQLgeneric.html">SQL</a></li>
+					<li><a href="Pythongeneric.html">Python</a></li>
+					<li><a href="ETLgeneric.html">ETL</a></li>
+					<li><a href="Bashgeneric.html">bash scripts</a></li>
+					<li class="active"><a href="PostgreSQLgeneric.html">PostgreSQL</a></li>
+				</ul>
+				<ul class="icons">
+					<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+					<li><a href="#" class="icon brands fa-telegram"><span class="label">Telegram</span></a></li>
+				</ul>
+			</nav>
+		<!-- Posts -->
+		<article id="work" class="wrapper style1">
+			<div id="wrapper">
+					<div id="main">
+						<section class="post">
+							<header class="major">
+								<span class="date">Март 14, 2024</span>
+								<h3>Создание множества однотипных справочников</h3>
+							</header>
+							<p></p>
+							<pre><code>CREATE OR REPLACE FUNCTION abdd.fcdict(rusn text, engn text)
+RETURNS void LANGUAGE plpgsql AS $function$
+begin
+    EXECUTE 'drop table if exists abdd.'||engn;
+    EXECUTE 'create table if not exists abdd.'||engn||' (id text,description text)';
+    EXECUTE 'comment on table abdd.'||engn||' is '''||rusn||'''';
+END; $function$;
+
+do $$
+begin
+    perform abdd.fcdict('Вид пересечения','type_intersection');
+    perform abdd.fcdict('Вид причала','type_pier');
+    perform abdd.fcdict('Вид разделительной полосы','type_dividing_strip');
+    perform abdd.fcdict('Тип фундамента','type_foundation_roasdign');
+    perform abdd.fcdict('Характеристика стабильности','type_stabiliy_concentaccident');
+end;
+$$</code></pre>
+						</section>													
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date">Март 03, 2024</span>
+									<h3>Скрипт для разгрузки одной таблицы в другие</h3>
+									<p></p>
+								</header>							
+								<p>В базе данных в таблице есть колонка с наименованием словаря, значение элемента словаря и его код.
+									Необходимо данные из этой таблицы записать в другие таблицы, соответствующие названию словаря. Название словаря - это комментарий к таблице.</p>
+								<pre><code>do $$
+declare
+   dct record;
+   tbl text;
+begin
+   for dct in
+      SELECT t.table_schema||'.'||t.table_name as tbl, d.title, d.id, d.description
+      FROM abdd.statement_dicts d
+      JOIN pg_catalog.pg_class pgc on pg_catalog.obj_description(pgc.oid, 'pg_class') = d.title
+      JOIN information_schema.tables t on t.table_name = pgc.relname
+       and t.table_type='BASE TABLE' and t.table_schema='abdd'
+   loop
+      execute 'delete from '||dct.tbl||' where id::numeric = '||dct.id;
+      execute 'insert into '||dct.tbl||' (id, description) values('||dct.id||','''||dct.description||''')';
+   end loop;  
+   commit;
+end;
+$$</code></pre>
+							</section>		
+			<!-- Copyright -->
+			<div id="copyright">
+				<ul><li><a href="https://t.me/SergeyOkunevBI"><span class="label">@SergeyOkunevBI</span></a></li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+			</div>
+
+			</div>
+			</div>
+		</article>
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
