@@ -21,6 +21,7 @@
 					<li><a href="Pythongeneric.html">Python</a></li>
 					<li class="active"><a href="ETLgeneric.html">ETL</a></li>
 					<li><a href="Bashgeneric.html">bash scripts</a></li>
+					<li><a href="PostgreSQLgeneric.html">PostgreSQL</a></li>
 				</ul>
 				<ul class="icons">
 					<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
@@ -31,7 +32,219 @@
 		<article id="work" class="wrapper style1">
 			<div id="wrapper">
 					<div id="main">
+						<!-- Post -->
+						<!--<section class="post">
+							<header class="major">
+								<span class="date">Февраль 15, 2024</span>
+								<h3>next ...</h3>
+							</header>
+							<div class="image main"><img src="images/pic01.jpg" alt="" /></div>
+							<p></p>
+							<pre><code></code></pre>
+						</section>	-->	
+						<!-- Post -->
+						<!-- Post -->
+						<section class="post">
+							<header class="major">
+								<span class="date">Апрель 05, 2024</span>
+								<h3>Python. Web -> Excel -> CSV - DB table</h3>
+							</header>
+							<p>Вызываем WEB-сервис, используя прокси-сервер.  Получаем файл Excel. Конвертируем данные из xlsx-файла в формат CSV. Загружаем CSV в таблицу базы данных, используя SQLLDR.</p>
+							<pre><code>import urllib2
+import datetime
+import xlrd
+import codecs
+import subprocess
+import os, sys
 
+v_realdate=datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+
+url_base='URL for downloas xlsx file'
+dir_data='place for downloaded file'
+dir_home='place for script'
+v_pass='user/password@DBname'
+file_prefix='part of file name'
+n_skip_rows=int('5') # for skiping first rows in xlsx file
+n_skip_last_rows=0
+n_sheet_by_index=0 # index of sheet in xlsx file for reading data
+enclose_marks='symbol for value in csv file'
+proxy = 'URL of proxy server'
+
+#setup proxy
+opener = urllib2.build_opener(urllib2.ProxyHandler(proxy))
+urllib2.install_opener(opener)
+
+# get xlsx file from server
+try : 
+	response = urllib2.urlopen(url_base)
+	f = open(dir_data+"/"+file_prefix+v_realdate+".xlsx", 'w' )
+	f.write( response.read() )
+	f.close()
+	response.close()
+except BaseException:
+	response.close()
+	os._exit(os.EX_UNAVAILABLE)
+
+# convert xlsx file into csv file
+try :
+	wb = xlrd.open_workbook(dir_data+"/"+file_prefix+v_realdate+".xlsx", encoding_override="utf-8")
+	sh = wb.sheet_by_index(n_sheet_by_index)
+except BaseException:
+	os._exit(os.EX_OSFILE)
+
+f = codecs.open(dir_data+"/"+file_prefix+v_realdate+".csv", 'w', encoding='utf-8')
+for rownum in xrange(sh.nrows):
+	if rownum>=n_skip_rows :
+	file_str=""
+	for col_num in  xrange(sh.ncols) :
+		if col_num > 0 :         file_str = file_str+";"
+		if sh.cell(rownum,col_num).ctype==3 :
+		#for date type
+		datetime_value = datetime.datetime(*xlrd.xldate_as_tuple(int(sh.cell_value(rownum,col_num)), 0))        file_str = file_str+enclose_marks+str(datetime_value)+enclose_marks
+		elif sh.cell(rownum,col_num).ctype==2:
+		#for float type
+		if 'e+' in str(sh.cell_value(rownum,col_num)):
+			file_str = file_str+enclose_marks+str(int(sh.cell_value(rownum,col_num)))+enclose_marks
+		else:
+			file_str = file_str+enclose_marks+str(int(sh.cell_value(rownum,col_num)))+enclose_marks
+		else:
+		file_str = file_str+enclose_marks+sh.cell_value(rownum,col_num)+enclose_marks
+
+	file_str=file_str.replace("\n","")+"\n"
+	f.write(file_str)
+	if rownum == sh.nrows-n_skip_last_rows -1 :
+		break
+f.close()
+
+# load csv into db-table
+sqlldr_bad_file=dir_data+"/sqlldr_"+file_prefix+v_realdate+"_"+str(n_sheet_by_index)+".bad"
+sqlldr_log_file=dir_data+"/sqlldr_"+file_prefix+v_realdate+"_"+str(n_sheet_by_index)+".log"
+ora_home = os.getenv('ORACLE_HOME') 
+run_sqlldr=ora_home+"/sqlldr "+ v_pass + " control = "+dir_home+"/CONTROL/"+file_prefix+str(n_sheet_by_index)+".ctl LOG="+sqlldr_log_file+" BAD="+sqlldr_bad_file+" DATA="+dir_data+"/"+file_prefix+v_realdate+".csv"
+
+return_code = subprocess.call(run_sqlldr, shell=True)if return_code <> 0 :
+	os._exit(37)
+if os.path.exists(dir_data+"/"+file_prefix+v_realdate+v_realdate+".bad") :
+	os._exit(9)
+
+# success
+os._exit(os.EX_OK)</code></pre>
+						</section>
+						<!-- Post -->
+						<section class="post">
+							<header class="major">
+								<span class="date">Апрель 02, 2024</span>
+								<h3>Shell. DB table -> inserts -> Nexus</h3>
+							</header>
+							<p>Используя shell, выгружаем в файл данные из таблицы базы данных в формате insert. Этот текстовый файл архивируем и сохраняем его в Nexus. Используется SQLPlus и 
+								самописная фунцкия для формирования строки в формат insert. Это можно избежать, используя SQLcl вместо SQLPlus.</p>
+							<pre><code>#!/bin/bash
+
+echo "find ${HOMEDIR}/OUT/ -name \"dqchecks.ins\" -delete"find ${HOMEDIR}/OUT/ -name "dqchecks.ins" -delete
+
+echo "Get config for connect to db (via sqlplus)" 
+. ${CONFIG_DIR}/set_oracle_env.sh
+
+echo "SQLPLUS ${ORA_PARFILE}"
+SQL_RESULT=$(sqlplus -silent $(head -1 ${ORA_PARFILE}| grep -Pio '[^=]+$') << EOF
+set head off
+set colsep ''
+set trimspool off 
+set pagesize 0
+set linesize 9999
+set termout off
+set feedback off
+set verify off
+set long 8000
+set longchunksize 8000
+spool ${HOMEDIR}/OUT/dqchecks.ins
+select  ardb_user.get_ins_line(dq_id,trim(sqltext),UPDATEDT,LDWH_OBJECT,CLASS,MDM_DQ_TYPE,DQ_DESC, RES_OK,CHECK_TYPE,ERR_CNT,ERR_CHNT_CHECK_DT,PRJ,QURANTINE,IS_ACTIVE,DETAIL_SQLTEXT,DQ_CHECK_CD,MULTIRESULT_SQLTEXT,PROJECT_ID)
+from dq.dq_check_sql@dwh_rls;
+EOF
+)
+
+if [ -f "${OUTTDIR}/dqchecks.ins" ]
+then
+	echo "There is a file"
+	ARC_FILE=${REALDATE}.tgz 
+	echo "archive dqchecks.ins file at ${REALDATE}"
+	tar -czf ${HOMEDIR}/OUT/${ARC_FILE} ${HOMEDIR}/OUT/dqchecks.ins &>> ${LOG_FILE}
+
+	. ${CONFIG_DIR}/dqcheckarch.properties
+	curl -s -u ${NEXUS_LOGIN} --upload-file "${OUTTDIR}/${ARC_FILE}" "${NEXUS_URL}/repository/DWH/dwh/DQ_CHECK_SQL/${ARC_FILE}" -o ${LOG_FILE}
+	find ${OUTTDIR} -name "${ARC_FILE}" -delete
+	exit 0
+fi
+
+exit -1</code></pre>
+						</section>	
+						<!-- Post -->						
+						<section class="post">
+							<header class="major">
+								<span class="date">Март 09, 2024</span>
+								<h3>Загрузка данных из разных источников, используя Python</h3>
+							</header>
+							<p>Получаем список идентификаторов из БД PostgreSQL, затем, получаем список идентификторов из MongoDB, находим те идентификторы, которых нет в MongoDB. 
+								И пробегая по списку идентификаторов, получаем фотографию из WEB-сервиса и сохраняем её в MongoDB. 
+								Рассматриваемый алгоритм не даст повторно получить из сервиса и сохранить в MongoDB одни и те же фотографии, то есть сэкономит много времени.</p>
+							<pre><code>import requests
+import psycopg2
+from datetime import datetime
+from pymongo import MongoClient
+import pandas as pd
+
+result_msg = "Ok"
+
+url_mongo = "mongodb://user:password@10.10.30.60:27017/?authMechanism=DEFAULT"
+url_api = "https://abdm.app/source/api/Main/bridgephotos?cisso="
+url_skdf = "host='10.10.30.50' port='5432' dbname='RMBJ' user='developer' password='developer'"
+
+try:
+	mongo_conn = MongoClient(url_mongo)
+	local_cll = mongo_conn.skdfFiles.ISSOphotos
+
+	postgre_conn = psycopg2.connect(url_skdf)
+	cursor = postgre_conn.cursor()
+	cursor.execute("select cisso from etl.bridge_shortinfo")
+	cissos = cursor.fetchall()
+
+	# 1 load cisso into DFrame
+	df_postgre = pd.DataFrame(cissos)
+	cissos = [i[0] for i in cissos]
+	sr_pg = pd.Series(cissos)
+
+	# 2 load cisso from MongoDB into DFrame
+	df_mongo = pd.DataFrame(local_cll.find({},{"_id":0,"cisso":1}))    
+	sr_mg = pd.Series(df_mongo['cisso'])
+
+	# 3 get difference between DFrames
+	df_dif = set(sr_pg.unique()) - set(sr_mg.unique())
+
+	# process the difference
+	for cisso in df_dif:
+		cid = str(cisso)
+		url_api_cisso = url_api + cid
+		response = requests.post(url_api_cisso)    
+		try:    
+			rows = response.json()
+		except:
+			continue
+		
+		for row in rows:    
+			photo_b64 = str(row['foto'])
+			n = int(row['n'])
+			titr = str(row['titr'])
+			fotoDate = str(row['fotoDate'])
+			ord = str(row['ord'])
+			new_photo = {"cisso":int(cid),"n":n,"titr":titr,"foto":photo_b64,"fotoDate":fotoDate,"ord":ord,"startday":datetime.now().strftime("%Y-%m-%dT%H:%M:%S")}
+			row = local_cll.insert_one(new_photo)
+
+except:
+	result_msg= "Exception"
+finally:
+	postgre_conn.close()  
+	mongo_conn.close()</code></pre>
+						</section>							
 						<!-- Post -->
 						<section class="post">
 							<header class="major">

@@ -21,6 +21,7 @@
 					<li><a href="Pythongeneric.html">Python</a></li>
 					<li><a href="ETLgeneric.html">ETL</a></li>
 					<li class="active"><a href="Bashgeneric.html">bash scripts</a></li>
+					<li><a href="PostgreSQLgeneric.html">PostgreSQL</a></li>
 				</ul>
 				<ul class="icons">
 					<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
@@ -41,6 +42,35 @@
 							<p></p>
 							<pre><code></code></pre>
 						</section>	-->	
+						<!-- Post -->
+						<section class="post">
+							<header class="major">
+								<span class="date">Февраль 13, 2024</span>
+								<h3>Созадаем каталог и символический линк</h3>
+							</header>
+							<p></p>
+							<pre><code>HOME_DIR=$(dirname $(realpath $0))
+DIR=$(basename ${HOME_DIR})
+LOGDIR="/ora_data1/Export/${DIR}/log"
+mkdir -p ${LOGDIR}
+if [ ! -L "${HOME_DIR}/log" ]
+then 
+    ln -sf ${LOGDIR} ${HOME_DIR}/log
+fi</code></pre>
+						</section>							
+						<!-- Post -->
+						<section class="post">
+							<header class="major">
+								<span class="date">Февраль 13, 2024</span>
+								<h3>Чтение параметров из файла</h3>
+							</header>
+							<p>Сохранив IP и порт в файле application.properties, можно использовать их в скрипте в команде curl следуюшим образом (один из примеров).</p>
+							<pre><code>par_ip=`grep "IP:" application.properties | awk '{print $2}'`
+par_port=`grep "port:" application.properties | awk '{print $2}'`
+
+curl -v http://${par_id}:${par_port}/webservice
+							</code></pre>
+						</section>							
 						<!-- Post -->
 						<section class="post">
 							<header class="major">
@@ -128,7 +158,10 @@ echo $URL
 							<p>Команда find -delete в указанной конфигурации находит файлы *.log и удаляет их. Это полезно, например, в том случае, когда необходимо заархивировать все скрипты, но предварительно удалить все ненужные файлы.</p>
 							<pre><code>find ./ -type f -name "*.log" -delete</code></pre>							
 							<p>Найти файл скриптов, который содержит в себе уже известный текст поможет эта команда.</p>
-							<pre><code>grep -inr --include=\*.sh "some text from file"</code></pre>							
+							<pre><code>grep -inr --include=\*.sh "some text from file"
+# но сначала узнайте объем найденного, это съэкономит время
+grep -inr --include=\*.sh "some text from file" | wc -l
+							</code></pre>							
 							<p>Команда dig вернёт только IP адрес указанного сервера.</p>
 							<pre><code>ip=`dig +short linux.org`
 echo ${ip}</code></pre>							
@@ -147,6 +180,10 @@ echo ${DIR}</code></pre>
 <pre><code>tar -czf /path/cfg.tgz /path/cfg.txt &>> ${LOG_FILE} </code></pre>	
 <p>Разархивируем файл.</p>
 <pre><code>tar -xvf /path/cfg.tgz</code></pre>		
+<p>При выполнении shell-скрипта выходит сообщение об ошибке: bad interpeter: No such file or directory. Вероятнее всего, скрипт был написан в Windows и строки заканчиваются характерным символом. Удалить их можно так:</p>
+							<pre><code>sed -i -e 's/\r$//' scriptname.sh</code></pre>	
+							<p>Только что написанному скрипту shell дадим гранты на запуск.</p>
+							<pre><code>chmod +x scriptname.sh</code></pre> 
 						</section>							
 						<!-- Post -->
 							<section class="post">

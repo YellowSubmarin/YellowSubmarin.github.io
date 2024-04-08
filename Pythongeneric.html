@@ -21,6 +21,7 @@
 					<li class="active"><a href="Pythongeneric.html">Python</a></li>
 					<li><a href="ETLgeneric.html">ETL</a></li>
 					<li><a href="Bashgeneric.html">bash scripts</a></li>
+					<li><a href="PostgreSQLgeneric.html">PostgreSQL</a></li>
 				</ul>
 				<ul class="icons">
 					<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
@@ -32,6 +33,55 @@
 		<article id="work" class="wrapper style1">
 			<div id="wrapper">
 					<div id="main">
+						<!-- Post -->
+						<!--<section class="post">
+							<header class="major">
+								<span class="date">Февраль 15, 2024</span>
+								<h3>next ...</h3>
+							</header>
+							<div class="image main"><img src="images/pic01.jpg" alt="" /></div>
+							<p></p>
+							<pre><code></code></pre>
+						</section>	-->	
+						<!-- Post -->
+						<section class="post">
+							<header class="major">
+								<span class="date">Март 09, 2024</span>
+								<h3>Варианты использования f'{}'</h3>
+							</header>
+							<p>Форматирование больших чисел - определение символа разряда.</p>
+							<pre><code>n: int = 1000000000
+print(f'{n:,}')
+g: float = 1e3
+print(f'{g:,}')</code></pre>
+							<p>Определения количества заполняющих символов и самого символа до определенного размера строки.</p>
+							<pre><code>lino: str = 'something'
+print(f'{lino:>20}', '|')
+print(f'{lino:<20}', '|')
+print(f'{lino:^20}', '|')
+
+print(f'{lino:#>20}', '|')
+print(f'{lino:*<20}', '|')
+print(f'{lino:&^20}', '|')</code></pre>
+							<p>Определение формта даты.</p>
+							<pre><code>from datetime import datetime
+now: datetime = datetime.now()
+print(f'{now:%d.%m.%Y (%H:%M:%S)}')
+print(f'{now:%c}')
+print(f'{now:%I%p}')</code></pre>
+							<p>Округление числа.</p>
+							<pre><code>n: float = 1234.56789
+print(f'Result is {n:.2f}')
+print(f'Result is {n:.0f}')
+print(f'Result is {n:,.3f}')</code></pre>
+							<p>Определение выражения для отладки.</p>
+							<pre><code>a: int = 89
+g: int = 51
+l: str = 'Hello everyone'
+print(f'{a + g = }')
+print(f'{l=}')
+print(f'{bool(a)=}')</code></pre>																												
+						</section>													
 						<!-- Post -->
 						<section class="post">
 							<header class="major">
