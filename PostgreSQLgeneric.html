@@ -43,16 +43,36 @@
 							<pre><code></code></pre>
 						</section>	-->	
 						<!-- Post -->
-						<!-- Post -->
-						<!--<section class="post">
+						<section class="post">
 							<header class="major">
-								<span class="date">Февраль 15, 2024</span>
-								<h3>next ...</h3>
+								<span class="date">Апрель 16, 2024</span>
+								<h3>Выполнение запросов через PSQL</h3>
 							</header>
-							<div class="image main"><img src="images/pic01.jpg" alt="" /></div>
-							<p></p>
-							<pre><code></code></pre>
-						</section>	-->	
+							<p>Когда с рабочего компьютера нет сетевого доступа к серверу СУБД PostgreSQL, но зато есть сетевой доступ к промежуточному серверу Linux, а у него уже есть сетевой доступ к этой СУБД, то можно воспользоваться утилитой PSQL для выполнения запросов к БД. Для запуска утилиты PSQL и передачи в неё SQL-запроса используем shell-скрипт.</p>
+							<pre><code>#!/bin/sh 
+. /ora_data1/cfg/PSQLLINE/pg.properties								
+PG_QUERY='select col1, col2, col3, col4 from my_table'
+PG_CMD="psql --host=${PG_IP} --port=${PF_PORT} --dbname=${PG_DB} --username=${PG_USER} --no-password -A -R # -t -v ON_ERROR_STOP=ON"
+PG_RES=$($PG_CMD << EOF
+$PG_QUERY
+EOF
+)
+[ $? -ne 0 ] && echo "ERROR! psql error" && exit 171
+echo ${PG_RES} | sed 's/#/\n/g' > result.txt</code></pre>
+                        <p>Файл pg.properties содержит объявления переменных, используемы для подключения к БД:</p>
+						<pre><code>export PG_IP="10.20.30.40"
+export PG_PORT="5532"
+export PG_DB="dpo"
+export PG_USER="etldwh"
+export PGPASSFILE="..."
+</code></pre>
+						<p>В этом файле определена переменная PGPASSFILE, которая ссылается на файл, содержащий аттрибуты для подключения к БД без явного указания пароля при подключении. 
+							Там может быть несколько разных подключений. 
+							Формат значения этой переменной следующий: <pre><code>hostname:port:database:username:password
+hostname:port:database:username:password</code></pre></p>
+<p>Опции -A -R # -t задают формат возвращаемых запросом строк и устанавляивают разделителем строк символ #.  При этом, все сторки записываются в одну линию. 
+	Чтобы результат SQL-запроса имел привычный табличный вид,  используем команду sed 's/#/\n/g' , которая заменяет символ # в строке на символ "новая строка".</p>
+						</section>
 						<!-- Post -->												
 						<section class="post">
 							<header class="major">

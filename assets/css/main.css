@@ -282,7 +282,7 @@ input, select, textarea {
 					right: 0;
 				}
 
-		@media screen and (max-width: 980px) {
+		@media screen and (max-width: 1180px) {
 
 			header br {
 				display: none;
@@ -290,7 +290,7 @@ input, select, textarea {
 
 		}
 
-		@media screen and (max-width: 736px) {
+		@media screen and (max-width: 980px) {
 
 			header.major {
 				margin: 0 0 2rem 0;
@@ -321,11 +321,11 @@ input, select, textarea {
 	.container {
 		margin: 0 auto;
 		max-width: calc(100% - 50px);
-		width: 1200px;
+		width: 1600px;
 	}
 
 		.container.medium {
-			width: 900px;
+			width: 1100px;
 		}
 
 		@media screen and (max-width: 1680px) {
@@ -1355,7 +1355,7 @@ input, select, textarea {
 
 		}
 
-		@media screen and (max-width: 736px) {
+		@media screen and (max-width: 1100px) {
 
 			.row {
 				display: flex;
