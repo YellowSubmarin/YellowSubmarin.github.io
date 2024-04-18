@@ -59,7 +59,7 @@ EOF
 )
 [ $? -ne 0 ] && echo "ERROR! psql error" && exit 171
 echo ${PG_RES} | sed 's/#/\n/g' > result.txt</code></pre>
-                        <p>Файл pg.properties содержит объявления переменных, используемы для подключения к БД:</p>
+                        <p>Файл pg.properties содержит объявления переменных, используемые для подключения к БД:</p>
 						<pre><code>export PG_IP="10.20.30.40"
 export PG_PORT="5532"
 export PG_DB="dpo"
