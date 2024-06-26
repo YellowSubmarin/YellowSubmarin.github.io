@@ -45,6 +45,19 @@
 						<!-- Post -->
 						<section class="post">
 							<header class="major">
+								<span class="date">Июнь 26, 2024</span>
+								<h3>Подключиться к серверу и выполнить файл скриптов</h3>
+							</header>
+							<p></p>
+							<pre><code>COMMANDS=`cat clean_tmp.sh`
+ssh -tt user@idserver<< EOF
+${COMMANDS}
+EOF
+							</code></pre>
+						</section>							
+						<!-- Post -->
+						<section class="post">
+							<header class="major">
 								<span class="date">Февраль 13, 2024</span>
 								<h3>Созадаем каталог и символический линк</h3>
 							</header>
@@ -162,7 +175,9 @@ echo $URL
 							<p>Если на компьютере много проектов с отдельными каталогами, то найти нужный файл проекта поможет эта команда.</p>
 							<pre><code>find . -name FILE_NAME.*</code></pre>							
 							<p>Команда find -delete в указанной конфигурации находит файлы *.log и удаляет их. Это полезно, например, в том случае, когда необходимо заархивировать все скрипты, но предварительно удалить все ненужные файлы.</p>
-							<pre><code>find ./ -type f -name "*.log" -delete</code></pre>							
+							<pre><code>find ./ -type f -name "*.log" -delete</code></pre>	
+							<p>Команда find -delete в указанной конфигурации находит в /tmp каталоги созданные более 1 дня назад и удаляет их.</p>
+							<pre><code>find /tmp/* -type d -maxdepht 1 | xargs rm -rf</code></pre>						
 							<p>Найти файл скриптов, который содержит в себе уже известный текст поможет эта команда.</p>
 							<pre><code>grep -inr --include=\*.sh "some text from file"
 # но сначала узнайте объем найденного, это съэкономит время
@@ -170,7 +185,10 @@ grep -inr --include=\*.sh "some text from file" | wc -l
 							</code></pre>							
 							<p>Команда dig вернёт только IP адрес указанного сервера.</p>
 							<pre><code>ip=`dig +short linux.org`
-echo ${ip}</code></pre>							
+echo ${ip}</code></pre>				
+							<p>Команда hostname вернёт только IP локального сервера.</p>
+							<pre><code>ip=`hostname -I | awk '{print $1}'`
+echo ${ip}</code></pre>				
 							<p>Команда date вернёт текущую дату в указанном формате.</p>	
 							<pre><code>realdate=`date +%Y-%m-%d`
 echo ${realdate}</code></pre>							
