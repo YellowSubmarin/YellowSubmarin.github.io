@@ -254,7 +254,7 @@ commit;</code></pre>
 <pre><code>
 delete from t
 where rowid in (select rowid from
-                   (select col, row_number() over (partition by col order by col) as rn from t)
+                   (select rowid, row_number() over (partition by col order by col) as rn from t)
                 where rn &gt; 1);
 </code></pre>
 </section>
