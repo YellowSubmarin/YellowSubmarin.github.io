@@ -47,8 +47,8 @@
 								<span class="date">Апрель 17, 2025</span>
 								<h3>Мониторинг работоспособности спервера. Числовые характеристики.</h3>
 							</header>
-							<p></p>
-							<pre><code></code></pre>
+							<p>Команда возвращает число - процент используемого диского пространства.</p>
+							<pre><code>df -h | awk '$1 == "" {print substr($5,1,length($5)-1)}'</code></pre>
 						</section>							
 						<!-- Post -->
 						<section class="post">
