@@ -49,6 +49,10 @@
 							</header>
 							<p>Команда возвращает число - процент используемого диского пространства.</p>
 							<pre><code>df -h | awk '$1 == "" {print substr($5,1,length($5)-1)}'</code></pre>
+							<p>Команда возвращает процент доступной оперативной памяти</p>
+							<pre><code>awk '/MemTotal/ {t=$2} /MemAvailable/ {a=$2} END {printf "%.2f\n", (a/t)*100}' /proc/meminfo</code></pre>
+							<p>Команда возвращает процент нагруженности системы</p>
+							<pre><code>uptime | awk '{print $12}'</code></pre>
 						</section>							
 						<!-- Post -->
 						<section class="post">
