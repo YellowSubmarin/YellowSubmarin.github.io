@@ -52,9 +52,10 @@
 							<p>Необходимо сначала авторизоваться и получить токен. Затем, обратиться к веб-сервису и получить данные, используя токен, полученный ранее.</p>
 							<pre><code>import requests
 
-response = requests.post(url=f"https://sso-base.../auth/token",
-    data={"grant_type":"client_credentials", "client_id":"9fzl40a5-...","client_secret":"xE78>89sf3YAB..."},
-	headers={"Content-Type":"application/x-www-form-urlencoded"})
+response = requests.post(
+        url=f"https://sso-base.../auth/token",
+        data={"grant_type":"client_credentials", "client_id":"9fzl40a5-...","client_secret":"xE78>89sf3YAB..."},
+        headers={"Content-Type":"application/x-www-form-urlencoded"})
 access_token = response.json()['access_token']	
 response = requests.get(url=f"http://...", 
                        headers={'Content-Type':'application/json','Authorization':f"Bearer {access_token}"})
