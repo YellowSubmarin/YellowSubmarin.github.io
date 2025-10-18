@@ -49,13 +49,18 @@
 							</header>
 							<p>При ежедневном создании файла с новым именем, копируем его в другой каталог, прибавляя индекс в конец наименования. Файлы созданные ранее 7 дней назад удаляем.</p>
 							<pre><code>cd /oda_data1/Scripts/Programm_1
-OUT_DIR="/oda_data4/Export/Program_1" ## сюда копируем файлы
-FILE_NAME="trades_fo_dev_20251018.zip" ## этот файл копируем
-
-FNAME_TEMPLATE="${FILE_NAME%.*}"  ## удаляем расширение в имени файла
-COUNT=$(find $OUT_DIR -type f -name "$FNAME_TEMPLATE*.zip" | wc -l) ## подсчитываем существующие файлы с таким наименованием
-cp $FILE_NAME $OUT_DIR/"$FNAME_TEMPLATE"_$((COUNT+=1)).zip ## копируем файл добавляя индекс в конец наименования
-find $OUT_DIR -mtime +7 -exec rm {} \;  ## удаляем файлы созданные более чем 7 дней назад
+## сюда копируем файлы
+OUT_DIR="/oda_data4/Export/Program_1" 
+## этот файл копируем
+FILE_NAME="trades_fo_dev_20251018.zip" 
+## удаляем расширение в имени файла
+FNAME_TEMPLATE="${FILE_NAME%.*}"  
+## подсчитываем существующие файлы с таким наименованием
+COUNT=$(find $OUT_DIR -type f -name "$FNAME_TEMPLATE*.zip" | wc -l) 
+## копируем файл добавляя индекс в конец наименования
+cp $FILE_NAME $OUT_DIR/"$FNAME_TEMPLATE"_$((COUNT+=1)).zip 
+## удаляем файлы созданные более чем 7 дней назад
+find $OUT_DIR -mtime +7 -exec rm {} \;  
 							</code></pre>
 						</section> 
 						<section class="post">
