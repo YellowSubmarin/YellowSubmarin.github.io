@@ -36,7 +36,7 @@
 						<!-- Post -->
 						<!--<section class="post">
 							<header class="major">
-								<span class="date">Февраль 15, 2024</span>
+								<span class="date">Февраль 15, 2025</span>
 								<h3>next ...</h3>
 							</header>
 							<div class="image main"><img src="images/pic01.jpg" alt="" /></div>
@@ -44,6 +44,24 @@
 							<pre><code></code></pre>
 						</section>	-->	
 						<!-- Post -->
+						<section class="post">
+							<header class="major">
+								<span class="date">Апрель 21, 2025</span>
+								<h3>Данные через веб-сервис с токеном</h3>
+							</header>
+							<p>Необходимо сначала авторизоваться и получить токен. Затем, обратиться к веб-сервису и получить данные, используя токен, полученный ранее.</p>
+							<pre><code>import requests
+
+response = requests.post(
+        url=f"https://sso-base.../auth/token",
+        data={"grant_type":"client_credentials", "client_id":"9fzl40a5-...","client_secret":"xE78>89sf3YAB..."},
+        headers={"Content-Type":"application/x-www-form-urlencoded"})
+access_token = response.json()['access_token']	
+response = requests.get(url=f"http://...", 
+                       headers={'Content-Type':'application/json','Authorization':f"Bearer {access_token}"})
+print(response.text)
+							</code></pre>
+						</section>						 
 						<section class="post">
 							<header class="major">
 								<span class="date">Март 09, 2024</span>

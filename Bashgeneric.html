@@ -61,10 +61,14 @@ find $OUT_DIR -mtime +7 -exec rm {} \;  ## удаляем файлы созда�
 						<section class="post">
 							<header class="major">
 								<span class="date">Апрель 17, 2025</span>
-								<h3>Мониторинг работоспособности спервера. Числовые характеристики.</h3>
+								<h3>Мониторинг работоспособности сервера. Числовые характеристики.</h3>
 							</header>
-							<p></p>
-							<pre><code></code></pre>
+							<p>Команда возвращает число - процент используемого диского пространства.</p>
+							<pre><code>df -h | awk '$1 == "" {print substr($5,1,length($5)-1)}'</code></pre>
+							<p>Команда возвращает процент доступной оперативной памяти</p>
+							<pre><code>awk '/MemTotal/ {t=$2} /MemAvailable/ {a=$2} END {printf "%.2f\n", (a/t)*100}' /proc/meminfo</code></pre>
+							<p>Команда возвращает процент нагруженности системы</p>
+							<pre><code>uptime | awk '{print $12}'</code></pre>
 						</section>							
 						<!-- Post -->
 						<section class="post">
